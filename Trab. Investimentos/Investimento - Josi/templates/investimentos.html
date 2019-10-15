@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block conteudo %}
+    <a class= 'link' href="/">Volar para home</a>
+    <div>
+        <form action="/salvar-investimento" method="POST">
+            <input name="categoria" type="text" placeholder="Categoria">
+            <input name="tipo" type="text" placeholder="Tipo">
+            <input name="aporte" type="text" placeholder="Aporte">
+            <input name="rentabilidade" type="text" placeholder="Rentabilidade">
+            <input name="periodo_rentabilidade" type="text" placeholder="Periodo Rentabilidade">
+            <input name="valor" type="text" placeholder="Valor">
+            <button>Salvar</button>
+        </form>
+    </div>
+{% endblock %}
+

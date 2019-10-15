@@ -1,0 +1,20 @@
+{% extends "tbl.html" %}
+{% block conteudo %}
+<div id="fazer_pedido">
+    <h1>Fazer Pedido</h1>
+    <form action="/salvar_pedido" method="POST">
+        <div class="labels">
+            <label for="">Item:</label>
+        </div>        
+        <input type="text" nome="item">
+        <div class="labels">
+            <label for="">Quantidade:</label>
+        </div>   
+        <input type="text" name="quantidade">
+        <hr>
+        <div class="salvar_pedido">
+        <input type="submit" value="Salvar Pedido">
+        </div>
+    </form>
+</div>
+{% endblock %}

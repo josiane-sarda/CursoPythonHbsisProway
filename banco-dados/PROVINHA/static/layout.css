@@ -1,0 +1,44 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.cabecalho{
+    width: 100%;
+    background: rgb(110, 174, 216);
+    height: 5em;
+
+}
+.cabecalho a{
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin: 1em 1em;
+}
+
+.menu ul li{
+    display: inline-block;
+    padding: 0em;
+    background: #97b1d8;
+}
+
+.menu ul li:hover{
+    background: forestgreen;
+    color:#dad6d6;
+}
+.menu ul li a{
+    padding: 0.2em;
+}
+
+.logo, .menu{
+    display: inline-block;
+    
+}
+.formulario{
+    width: 40%;
+
+    margin: 2em auto;
+}
+.formulario .input{
+    width: 100%;
+}

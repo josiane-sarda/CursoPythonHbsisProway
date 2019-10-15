@@ -1,0 +1,25 @@
+{% extends "principal.html" %}
+{% block conteudo %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Categoria: </th>
+        <th scope="col">Tipo: </th>
+        <th scope="col">Aporte: </th>
+        <th scope="col">Rentabilidade: </th>
+        <th scope="col">Periodo de Rentabilidade: </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in lista%}
+      <tr>
+        <td>{{i.categoria}}</td>
+        <td>{{i.tipo}}</td>
+        <td>{{i.aporte}}</td>
+        <td>{{i.rentabilidade}}</td>
+        <td>Data final: {{i.periodo_rentabilidade}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endblock %}

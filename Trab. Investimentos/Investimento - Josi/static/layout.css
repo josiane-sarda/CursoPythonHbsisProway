@@ -1,0 +1,33 @@
+body{
+    margin: 0;
+    background: #756d7e
+}
+.cabecalho{
+    width: 100%;
+    background: rgb(177, 130, 130);
+    height: 8m;
+    text-align: center
+}
+
+#corpo_pagina ul li:hover{
+    margin: 0;
+    background: #8d58c2;
+    color: #1e0735;
+    cursor: pointer
+}
+
+#corpo_pagina ul li{
+    margin: 0 0.5em;
+    float:left;
+    border: #b7b1bd 1px solid;
+    color:#1e0735;
+    height: 3em;
+    width: 10em;    
+}
+#corpo_pagina{
+    margin: 0;
+    background: #c0bfc2
+}
+#corpo_pagina{
+    display: inline-block;
+}

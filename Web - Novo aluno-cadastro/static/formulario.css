@@ -1,0 +1,39 @@
+body{
+    background: url("fundo.jpg");
+    background-size: 100%;
+}
+h1, .dados{
+    text-align: center;
+    font-family: "arial"- sans-serif;
+}
+.salvar {
+    text-align: center;
+    font-family: "arial"- sans-serif;
+}
+label{
+    height: 2em;
+    text-align: left;
+    padding: 0.5em 0 0 1em;
+    font-size: 15px;
+
+}
+
+input{
+    height: 1.5em;
+    padding: 0.8em 1em;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin-top: 4px;
+
+}
+.salvar input{
+    height: 2em;
+    width: 5em;
+    padding: 0.2em;
+    vertical-align: middle;
+    background: #ffffff
+}
+.salvar input:hover{
+    background: #f19
+}
+
