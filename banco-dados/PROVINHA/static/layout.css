@@ -42,3 +42,22 @@ body{
 .formulario .input{
     width: 100%;
 }
+
+table {
+    width: 70%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+table thead {
+    background: rgb(107, 137, 172);
+    color: rgba(39, 24, 104, 0.808);
+}
+
+table thead th{
+    padding: 0.5em 1em;
+    height: 2em;
+    text-transform: uppercase;
+
+
+}

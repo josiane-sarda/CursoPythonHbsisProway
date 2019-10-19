@@ -1,6 +1,88 @@
 from flask import Flask, render_template, request, redirect
 from cliente import Cliente
+from categoria import Categoria
+from produto import Produto
 import MySQLdb
+
+##produto
+
+def listar_produto_db():
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("select * from PRODUTO") 
+    listar_produto = []
+    for i in cursor.fetchall():
+        produto = Produto()
+        produto.id = i[0]
+        produto.nome = i[1]
+        produto.descricao = i[2]
+        produto.categoria_id = i[3]
+        produto.estoque_id = i[4]
+        listar_produto.append(produto)
+
+    conexao.close()
+    return listar_produto
+
+##categoria
+
+def salvar_categoria_db(categoria):
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("INSERT INTO CATEGORIA (TIPO_PRODUTO, DESCRICAO)" + 
+    " VALUES ('{}', '{}')".format(categoria.tipo, categoria.descricao))
+    conexao.commit()
+    conexao.close()
+
+def editar_categoria_db(categoria):
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("UPDATE CATEGORIA SET TIPO_PRODUTO = '{}', DESCRICAO = '{}' WHERE ID = {}"
+    .format(categoria.tipo, categoria.descricao, categoria.id))
+    conexao.commit()
+    conexao.close()   
+
+def listar_categoria_db():
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("SELECT * FROM CATEGORIA")
+    lista_categoria = []
+    for i in cursor.fetchall():
+        categoria = Categoria()
+        categoria.id = i[0]
+        categoria.tipo = i[1]
+        categoria.descricao = i[2]
+        lista_categoria.append(categoria)
+
+    conexao.close()
+    return lista_categoria
+
+def deletar_categoria(id):
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("DELETE FROM CATEGORIA WHERE id={}".format(id))
+    conexao.commit()
+    conexao.close()
+
+def alterar_categoria_db(categoria):
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute("UPDATE CATEGORIA SET( tipo_produto='{}', descricao='{}') WHERE id={}"
+    .format(categoria.tipo, categoria.descricao, categoria.id))
+    conexao.commit()
+
+def buscar_categoria_por_id(id):
+    conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
+    cursor = conexao.cursor()
+    cursor.execute('SELECT * FROM CATEGORIA WHERE id ={}'.format(id))
+    c = Categoria()
+    for i in cursor.fetchall():
+        c.id = i[0]
+        c.tipo = i[1]
+        c.descricao = i[2]
+    conexao.close()
+    return c
+
+
 
 def listar_clientes():
     cliente1 = Cliente()
@@ -13,26 +95,32 @@ def listar_clientes():
 
 def listar_clientes_db():
     conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
-    cursor = conexao.cursor()
+    cursor = conexao.cursor()  #esse metodo conecta no banco de dados, seleciona os dados, cria uma lista vazia.
     cursor.execute("SELECT * FROM Cliente")
-    lista_cliente = []
-    for i in cursor.fetchall():
+    lista_cliente = []           #variavel criada atraves de uma classe é um objeto.
+    for i in cursor.fetchall():  #passa em todos as informações selecionadas do banco e vai armazenando no objeto. 
         cliente2 = Cliente()
         cliente2.id = i[0]
         cliente2.nome = i[1]
         cliente2.cpf = i[2]
         cliente2.nascimento = i[3]
-        lista_cliente.append(cliente2)
-    conexao.close()
-    return lista_cliente
+        lista_cliente.append(cliente2)  #adiciona o objeto na lista vazia.
+    conexao.close()   #fecha o banco
+    return lista_cliente  #retorna para quem chamou esse metodo.
 
-def salvar_cliente_db(nome, cpf,dt_nasc):
+
+
+
+#conecta com o banco de dados. Esse metodo precisa receber os três parametros.
+#esses parametros foram colocados entre parenteses quando o metodo foi chamado.
+#inserindo na tabela cliente, nas coluna (), os valors () - que vieram do input.
+def salvar_cliente_db(nome, cpf,dt_nasc):  
     conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
     cursor = conexao.cursor()
     cursor.execute("INSERT INTO Cliente (nome,cpf,data_nascimento)" + 
     " VALUES ('{}', '{}', '{}')".format(nome,cpf,dt_nasc))
-    conexao.commit()
-    conexao.close()
+    conexao.commit() #salva no banco
+    conexao.close() #fecha conexao com bd.
 
 def deletar_cliente(id):
     conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
@@ -44,9 +132,10 @@ def deletar_cliente(id):
 def alterar_cliente_db(cliente):
     conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
     cursor = conexao.cursor()
-    cursor.execute("UPDATE Cliente SET( nome='{}', cpf='{}', data_nascimento='{}' ) WHERE id={}"
+    cursor.execute("UPDATE Cliente SET nome='{}', cpf='{}', data_nascimento='{}' WHERE ID={}"
     .format(cliente.nome, cliente.cpf, cliente.nascimento , cliente.id))
     conexao.commit()
+
 def buscar_cliente_por_id(id):
     conexao = MySQLdb.connect(host="mysql.zuplae.com", user="zuplae04", passwd="lendas19", database="zuplae04")
     cursor = conexao.cursor()
@@ -60,6 +149,7 @@ def buscar_cliente_por_id(id):
     conexao.close()
     return c
 
+
 nome_de_la_page = "Nome da pagina"
 
 app= Flask(__name__)
@@ -68,25 +158,27 @@ def inicio():
     return render_template('index.html', nome_de_la_page = nome_de_la_page)
 
 @app.route('/cliente/lista')
-def lista_cliente():
-    lista = listar_clientes_db()
-    return render_template('lista_cliente.html', nome_de_la_page = nome_de_la_page, lista = lista)
+def lista_cliente():  #esse metodo esta chamando o metodo abaixo // será executado o metodo abaixo e guardado o resultado 
+    lista = listar_clientes_db()  #na variavel lista.
+    return render_template('lista_cliente.html', nome_de_la_page = nome_de_la_page, listinha = lista)
+        #o que esta em azul esta esperando informaçoes no html.
+        # é renderizado lista_cliente.html e recebe os dois parametros que estao em azul.
 
 @app.route('/cliente')
 def cliente():
     return render_template('cliente.html', nome_de_la_page = nome_de_la_page)
 
-@app.route('/cliente/salvar', methods = ['POST'])
+@app.route('/cliente/salvar', methods = ['POST']) #post: pega os dados que o usuario informou e salva sem mostrar na url
 def salvar():
-    nome = request.form['nome']
+    nome = request.form['nome'] #variavel que esta requerendo uma informacao digitada no formulario na referencia 'nome(laranja)'
     cpf = request.form['cpf']
     nascimento = request.form['nascimento']
-    cliente = Cliente()
-    cliente.nome = nome 
+    cliente = Cliente()   #criando objeto cliente atraves da classe Cliente.
+    cliente.nome = nome #na variavel nome do objeto será guardada a informacao digitada na referencia nome 
     cliente.cpf = cpf
-    cliente.nascimento = nascimento
-    salvar_cliente_db(cliente.nome, cliente.cpf, cliente.nascimento)
-    return redirect('/cliente/lista')
+    cliente.nascimento = nascimento 
+    salvar_cliente_db(cliente.nome, cliente.cpf, cliente.nascimento) #chamou o metodo do banco de dados.
+    return redirect('/cliente/lista') #depois de executar esse metodo q foi chamado, será direcionado para esta rota.
 
 @app.route('/cliente/delete')
 def deletar():
@@ -100,15 +192,92 @@ def cliente_alterar():
     cliente = buscar_cliente_por_id(id)
     return render_template('cliente_alterar.html', cliente=cliente)
 
-@app.route('/cliente/alterar/salvar', methods=['PUT'])
+@app.route('/cliente/alterar/salvar', methods=['POST'])
 def cliente_alterar_salvar():
+    id = request.form['id']
     nome = request.form['nome']
     cpf = request.form['cpf']
     nascimento = request.form['nascimento']
     cliente = Cliente()
+    cliente.id = id 
     cliente.nome = nome 
     cliente.cpf = cpf
     cliente.nascimento = nascimento
     alterar_cliente_db(cliente)
     return redirect ('/cliente/lista')
+
+#################### CATEGORIA ###############################
+
+@app.route('/categoria')
+def categoria():
+    return render_template('categoria.html')
+
+@app.route('/categoria/salvar', methods=['POST'])
+def salvar_categoria():
+    tipo = request.form['tipo']
+    descricao = request.form['descricao']
+    categoria = Categoria()
+    categoria.tipo = tipo 
+    categoria.descricao = descricao
+    salvar_categoria_db(categoria)
+    return redirect('/categoria/lista')
+
+@app.route('/categoria/lista')
+def lista_categoria():
+    lista_volta = listar_categoria_db()
+    return render_template('lista_categorias.html', lista=lista_volta)
+
+@app.route('/categoria/delete')
+def apagar_categoria():
+    id = request.args['id']
+    deletar_categoria(id)
+    return redirect('/categoria/lista')
+
+@app.route('/categoria/alterar')
+def alterar_categoria():
+    id = request.args['id']    
+    categoria = buscar_categoria_por_id(id)
+    return render_template('editar_categoria.html', categoria = categoria)
+
+@app.route('/categoria/alterar/salvar', methods=['POST'])
+def alterar_categoria_salvar():
+    id = request.form['id']
+    tipo = request.form['tipo']
+    descricao = request.form['descricao']
+    categoria = Categoria()
+    categoria.id = id 
+    categoria.tipo = tipo 
+    categoria.descricao = descricao
+    editar_categoria_db(categoria)
+    return redirect('/categoria/lista')
+
+####################### PRODUTOS ########################
+
+@app.route('/produtos')
+def produto():
+    return render_template('produto.html')
+
+@app.route('/produto/salvar', methods=['POST'])
+def salvar_produto():
+    return redirect('/produto/lista')
+
+@app.route('/produto/lista')
+def listar_produto():
+    lista_volta = listar_produto_db()
+    return render_template('lista_produto.html', lista=lista_volta)
+
+@app.route('/produto/delete')
+def apagar_produto():
+    return redirect('/produto/lista')
+
+@app.route('/produto/alterar')
+def editar_produto():
+    return render_template('editar_produto.html')
+
+@app.route('/produto/alterar/salvar', methods=['POST'])
+def alterar_produto_salvar():
+    return redirect('/produto/lista')
+
+
+
 app.run()
